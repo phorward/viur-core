@@ -1,27 +1,22 @@
 # -*- coding: utf-8 -*-
-
-from viur.core.render.json.default import DefaultRender
+from viur.core.render.msgpack.default import DefaultRender
 from viur.core.render.vi.user import UserRender as user
-from viur.core.render.json.file import FileRender as file
+from viur.core.render.msgpack.file import FileRender as file
 from viur.core.skeleton import Skeleton
-#from google.appengine.api import app_identity
-from viur.core import conf
-from viur.core import securitykey
-from viur.core import utils
-from viur.core import request
-from viur.core import session
-from viur.core import errors
-import datetime, json
+from viur.core import conf, securitykey, utils, errors
 from viur.core.utils import currentRequest, currentLanguage
 
+import datetime, msgpack
+
+
 class default(DefaultRender):
-	kind = "json.vi"
+	kind = "msgpack.vi"
 
 __all__ = [default]
 
 
 def genSkey(*args, **kwargs):
-	return json.dumps(securitykey.create())
+	return msgpack.dumps(securitykey.create())
 
 
 genSkey.exposed = True
@@ -29,7 +24,7 @@ genSkey.exposed = True
 
 def timestamp(*args, **kwargs):
 	d = datetime.datetime.now()
-	return (json.dumps(d.strftime("%Y-%m-%dT%H-%M-%S")))
+	return (msgpack.dumps(d.strftime("%Y-%m-%dT%H-%M-%S")))
 
 
 timestamp.exposed = True
@@ -40,7 +35,7 @@ def getStructure(adminTree, module):
 			or not "adminInfo" in dir(getattr(adminTree, module)) \
 			or not getattr(adminTree, module).adminInfo:
 		# Module not known or no adminInfo for that module
-		return (json.dumps(None))
+		return (msgpack.dumps(None))
 	res = {}
 	try:
 		moduleObj = getattr(adminTree, module)
@@ -56,9 +51,9 @@ def getStructure(adminTree, module):
 			if isinstance(skel, Skeleton):
 				res[stype] = default().renderSkelStructure(skel)
 	if res:
-		return (json.dumps(res))
+		return msgpack.dumps(res)
 	else:
-		return (json.dumps(None))
+		return msgpack.dumps(None)
 
 
 def setLanguage(lang, skey):
@@ -94,12 +89,12 @@ def dumpConfig(adminTree):
 	for k, v in conf.items():
 		if k.lower().startswith("admin."):
 			res["configuration"][k[6:]] = v
-	return json.dumps(res)
+	return msgpack.dumps(res)
 
 
 def getVersion(*args, **kwargs):
 	# We force the patch-level of our version to be always zero for security reasons
-	return json.dumps((conf["viur.version"][0], conf["viur.version"][1], 0))
+	return msgpack.dumps((conf["viur.version"][0], conf["viur.version"][1], 0))
 
 
 getVersion.exposed = True

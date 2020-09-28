@@ -569,3 +569,4 @@ class List(BasicApplication):
 List.admin = True
 List.html = True
 List.vi = True
+List.msgpack = True

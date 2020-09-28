@@ -2,5 +2,6 @@
 from . import html
 from . import admin
 from . import xml
+from . import msgpack
 from . import json
 from . import vi

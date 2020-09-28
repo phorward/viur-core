@@ -1,0 +1,9 @@
+Reference: https://msgpack.org/
+
+*I just changed the json.dumps to msgpack.dumps*
+
+Used by: 
+https://www.pinterest.de/pinterest/
+https://www.treasuredata.com/
+Supported by: 
+https://redis.io/

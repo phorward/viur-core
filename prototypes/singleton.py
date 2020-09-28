@@ -311,3 +311,4 @@ class Singleton(BasicApplication):
 Singleton.admin = True
 Singleton.html = True
 Singleton.vi = True
+Singleton.msgpack = True

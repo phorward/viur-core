@@ -775,5 +775,7 @@ class Tree(BasicApplication):
 		user = utils.getCurrentUser()
 		if user:
 			logging.info("User: %s (%s)" % (user["name"], user["key"]))
+
 Tree.vi = True
 Tree.admin = True
+Tree.msgpack = True

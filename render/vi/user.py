@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from viur.core.render.json.user import UserRender as user
+from viur.core.render.msgpack.user import UserRender as user
 import string, json
 
 
 class UserRender(user):
-	kind = "json.vi"
+	kind = "msgpack.vi"
+
 	def loginSucceeded(self, **kwargs):
 		"""
 		This loginSuccess method generates a HTML site, which redirects by meta-refresh to the Vi,

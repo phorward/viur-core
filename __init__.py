@@ -162,6 +162,7 @@ def buildApp(config, renderers, default=None, *args, **kwargs):
 		res = ExtendableObject()
 	config._tasks = TaskHandler
 	resolverDict = {}
+
 	for moduleName in dir(config):  # iterate over all modules
 		if moduleName == "index":
 			mapModule(res, "index", resolverDict)
