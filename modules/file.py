@@ -33,8 +33,7 @@ bucket = client.lookup_bucket("%s.appspot.com" % projectID)
 class injectStoreURLBone(baseBone):
 	def unserialize(self, skel, name):
 		if "dlkey" in skel.dbEntity and "name" in skel.dbEntity:
-			skel.accessedValues[name] = utils.downloadUrlFor(skel.dbEntity["dlkey"], skel.dbEntity["name"],
-															 derived=False)
+			skel.accessedValues[name] = utils.downloadUrlFor(skel.dbEntity["dlkey"], skel.dbEntity["name"]["val"], derived=False)
 			return True
 		return False
 
@@ -147,8 +146,8 @@ class File(Tree):
 
 	adminInfo = {
 		"name": "File",
-		"handler": "tree.simple.file",
-		"icon": "icons/modules/my_files.svg"
+		"handler": "tree.file",
+		"icon": "icons-file"
 	}
 
 	blobCacheTime = 60 * 60 * 24  # Requests to file/download will be served with cache-control: public, max-age=blobCacheTime if set

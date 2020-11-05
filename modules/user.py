@@ -505,8 +505,8 @@ class User(List):
 
 	adminInfo = {
 		"name": "User",
-		"handler": "list",
-		"icon": "icons/modules/users.svg"
+		"handler": "list.user",
+		"icon": "icons-users"
 	}
 
 	def __init__(self, moduleName, modulePath, *args, **kwargs):

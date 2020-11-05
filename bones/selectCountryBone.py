@@ -762,9 +762,3 @@ class selectCountryBone(selectBone):
 					skel.accessedValues[name] = inv[value]
 				except:
 					pass
-			else:
-				if value not in self.values:
-					del skel.accessedValues[name]
-					return False
-			return True
-		return False
