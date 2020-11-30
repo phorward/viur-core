@@ -133,3 +133,32 @@ class recordBone(baseBone):
 
 		"""
 		raise NotImplementedError
+
+	def postSavedHandler(self, skel, boneName, key):
+		super().postSavedHandler(skel, boneName, key)
+
+		values = skel[boneName]
+		if values:
+			uskel = self.using()
+
+			if not isinstance(values, list):
+				values = [values]
+
+			for entry in values:
+				for name, bone in uskel.items():
+					bone.postSavedHandler(entry, name, key)
+
+
+	def refresh(self, skel, boneName):
+		super().refresh(skel, boneName)
+
+		values = skel[boneName]
+		if values:
+			uskel = self.using()
+
+			if not isinstance(values, list):
+				values = [values]
+
+			for entry in values:
+				for name, bone in uskel.items():
+					bone.refresh(entry, name)

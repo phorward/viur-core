@@ -55,7 +55,13 @@ class fileBone(treeLeafBone):
 		self.derive = derive
 
 	def postSavedHandler(self, skel, boneName, key):
-		super().postSavedHandler(skel, boneName, key)
+		try:
+			super().postSavedHandler(skel, boneName, key)
+		except AttributeError:
+			pass
+		except Exception:
+			raise
+
 		values = skel[boneName]
 		if self.derive and values:
 			if isinstance(values, dict):

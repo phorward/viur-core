@@ -44,18 +44,34 @@ def thumbnailer(fileSkel, targetName, params):
 	outData = BytesIO()
 	blob.download_to_file(fileData)
 	fileData.seek(0)
-	img = Image.open(fileData)
+
+	try:
+		img = Image.open(fileData)
+	except:
+		return None  # ICH HASSE PYTHON DRECKS INFRASTRUKTUR
+	#except PIL.UnidentifiedImageError:
+	#	return None
+	#except Exception as e:
+	#	raise e
+
 	if "size" in params:
 		img.thumbnail(params["size"])
 	elif "width" in params:
 		img = img.resize((params["width"], int((float(img.size[1]) * float(params["width"] / float(img.size[0]))))),
 						 Image.ANTIALIAS)
-	img.save(outData, "JPEG")
+
+	if fileSkel["mimetype"] == "image/jpeg":
+		img.save(outData, "JPEG")
+	elif fileSkel["mimetype"] == "image/png":
+		img.save(outData, "PNG")
+	else:
+		raise ValueError("Unable to downsize image if type %r" % fileSkel["mimetype"])
+
 	outSize = outData.tell()
 	outData.seek(0)
 	targetBlob = bucket.blob("%s/derived/%s" % (fileSkel["dlkey"], targetName))
-	targetBlob.upload_from_file(outData, content_type="image/jpeg")
-	return targetName, outSize, "image/jpeg"
+	targetBlob.upload_from_file(outData, content_type=fileSkel["mimetype"])
+	return targetName, outSize, fileSkel["mimetype"]
 
 
 class fileBaseSkel(TreeSkel):

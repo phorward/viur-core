@@ -631,15 +631,16 @@ def downloadUrlFor(render, fileObj, expires=0, derived=None):
 		expires = timedelta(minutes=expires)
 	if not isinstance(fileObj, (SkeletonInstance, dict)) or "dlkey" not in fileObj or "name" not in fileObj:
 		return None
-	if derived and ("derived" not in fileObj or not isinstance(fileObj["derived"], dict)):
-		return None
+
+	#if derived and ("derived" not in fileObj or not isinstance(fileObj["derived"], dict)):
+	#	return None
 	if derived:
 		return utils.downloadUrlFor(folder=fileObj["dlkey"], fileName=derived, derived=True, expires=expires)
 	else:
 		return utils.downloadUrlFor(folder=fileObj["dlkey"], fileName=fileObj["name"], derived=False, expires=expires)
 
 @jinjaGlobalFunction
-def srcSetFor(render, fileObj, expires):
+def srcSetFor(render, fileObj, expires=0):
 	if "dlkey" not in fileObj and "dest" in fileObj:
 		fileObj = fileObj["dest"]
 	if expires:
