@@ -114,7 +114,7 @@ class List(SkelModule):
         return self.render.view(skel)
 
     @exposed
-    def view(self, key: db.Key | str | int, *args, **kwargs) -> Any:
+    def view(self, key: db.Key | str | int | None = None, *args, **kwargs) -> Any:
         """
             Prepares and renders a single entry for viewing.
 
@@ -130,6 +130,8 @@ class List(SkelModule):
             :raises: :exc:`viur.core.errors.NotFound`, when no entry with the given *key* was found.
             :raises: :exc:`viur.core.errors.Unauthorized`, if the current user does not have the required permissions.
         """
+        if key is None:
+            raise errors.NotAcceptable("No key provided.")
         skel = self.viewSkel()
         if not skel.fromDB(key):
             raise errors.NotFound()
@@ -166,7 +168,7 @@ class List(SkelModule):
     @force_ssl
     @exposed
     @skey(allow_empty=SKEY_ALLOW_EMPTY_FOR_KEY)
-    def edit(self, key: db.Key | str | int, *args, **kwargs) -> Any:
+    def edit(self, key: db.Key | str | int | None = None, *args, **kwargs) -> Any:
         """
             Modify an existing entry, and render the entry, eventually with error notes on incorrect data.
             Data is taken by any other arguments in *kwargs*.
@@ -184,6 +186,8 @@ class List(SkelModule):
             :raises: :exc:`viur.core.errors.Unauthorized`, if the current user does not have the required permissions.
             :raises: :exc:`viur.core.errors.PreconditionFailed`, if the *skey* could not be verified.
         """
+        if key is None:
+            raise errors.NotAcceptable("No key provided.")
         skel = self.editSkel()
         if not skel.fromDB(key):
             raise errors.NotFound()
@@ -247,7 +251,7 @@ class List(SkelModule):
     @force_post
     @exposed
     @skey
-    def delete(self, key: db.Key | str | int, *args, **kwargs) -> Any:
+    def delete(self, key: db.Key | str | int | None = None, *args, **kwargs) -> Any:
         """
             Delete an entry.
 
@@ -261,6 +265,8 @@ class List(SkelModule):
             :raises: :exc:`viur.core.errors.Unauthorized`, if the current user does not have the required permissions.
             :raises: :exc:`viur.core.errors.PreconditionFailed`, if the *skey* could not be verified.
         """
+        if key is None:
+            raise errors.NotAcceptable("No key provided.")
         skel = self.editSkel()
         if not skel.fromDB(key):
             raise errors.NotFound()

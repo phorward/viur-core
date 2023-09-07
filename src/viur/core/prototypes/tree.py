@@ -295,7 +295,7 @@ class Tree(SkelModule):
         return self.render.view(skel)
 
     @exposed
-    def view(self, skelType: SkelType, key: db.Key | str | int, *args, **kwargs) -> Any:
+    def view(self, skelType: SkelType, key: db.Key | str | int | None = None, *args, **kwargs) -> Any:
         """
         Prepares and renders a single entry for viewing.
 
@@ -315,7 +315,8 @@ class Tree(SkelModule):
         """
         if not (skelType := self._checkSkelType(skelType)):
             raise errors.NotAcceptable(f"Invalid skelType provided.")
-
+        if key is None:
+            raise errors.NotAcceptable("No key provided.")
         skel = self.viewSkel(skelType)
         if not skel.fromDB(key):
             raise errors.NotFound()
@@ -379,7 +380,7 @@ class Tree(SkelModule):
     @exposed
     @force_ssl
     @skey(allow_empty=SKEY_ALLOW_EMPTY_FOR_KEY)
-    def edit(self, skelType: SkelType, key: db.Key | str | int, *args, **kwargs) -> Any:
+    def edit(self, skelType: SkelType, key: db.Key | str | int | None = None, *args, **kwargs) -> Any:
         """
         Modify an existing entry, and render the entry, eventually with error notes on incorrect data.
         Data is taken by any other arguments in *kwargs*.
@@ -426,7 +427,7 @@ class Tree(SkelModule):
     @force_ssl
     @force_post
     @skey
-    def delete(self, skelType: SkelType, key: str, *args, **kwargs) -> Any:
+    def delete(self, skelType: SkelType, key: db.Key | str | int | None = None, *args, **kwargs) -> Any:
         """
         Deletes an entry or an directory (including its contents).
 
@@ -443,9 +444,12 @@ class Tree(SkelModule):
         :raises: :exc:`viur.core.errors.Unauthorized`, if the current user does not have the required permissions.
         :raises: :exc:`viur.core.errors.PreconditionFailed`, if the *skey* could not be verified.
         """
+
         if not (skelType := self._checkSkelType(skelType)):
             raise errors.NotAcceptable(f"Invalid skelType provided.")
 
+        if key is None:
+            raise errors.NotAcceptable("No key provided.")
         skel = self.editSkel(skelType)
         if not skel.fromDB(key):
             raise errors.NotFound()
@@ -489,7 +493,7 @@ class Tree(SkelModule):
     @force_ssl
     @force_post
     @skey
-    def move(self, skelType: SkelType, key: db.Key | str | int, parentNode: str, *args, **kwargs) -> str:
+    def move(self, skelType: SkelType, key: db.Key | str | int | None, parentNode: str, *args, **kwargs) -> str:
         """
         Move a node (including its contents) or a leaf to another node.
 
@@ -508,6 +512,9 @@ class Tree(SkelModule):
         """
         if not (skelType := self._checkSkelType(skelType)):
             raise errors.NotAcceptable(f"Invalid skelType provided.")
+
+        if key is None:
+            raise errors.NotAcceptable("No key provided.")
 
         skel = self.editSkel(skelType)  # srcSkel - the skeleton to be moved
         parentNodeSkel = self.baseSkel("node")  # destSkel - the node it should be moved into
