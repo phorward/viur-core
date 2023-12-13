@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for /home/runner/work/viur-core/viur-core/viur/src/viur/core/session.py: 28%</title>
+    <title>Coverage for /home/runner/work/viur-core/viur-core/viur/src/viur/core/session.py: 31%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="coverage_html.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>/home/runner/work/viur-core/viur-core/viur/src/viur/core/session.py</b>:
-            <span class="pc_cov">28%</span>
+            <span class="pc_cov">31%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="d_e295e1cac9db2f73_skeleton_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.3.2">coverage.py v7.3.2</a>,
-            created at 2023-10-10 18:25 +0000
+            created at 2023-12-13 13:12 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -192,7 +192,7 @@
     <p class="mis show_mis"><span class="n"><a id="t108" href="#t108">108</a></span><span class="t">        <span class="nam">dbSession</span><span class="op">[</span><span class="str">"static_security_key"</span><span class="op">]</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">static_security_key</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t">        <span class="nam">dbSession</span><span class="op">[</span><span class="str">"lastseen"</span><span class="op">]</span> <span class="op">=</span> <span class="nam">time</span><span class="op">.</span><span class="nam">time</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t110" href="#t110">110</a></span><span class="t">        <span class="nam">dbSession</span><span class="op">[</span><span class="str">"user"</span><span class="op">]</span> <span class="op">=</span> <span class="nam">str</span><span class="op">(</span><span class="nam">user_key</span><span class="op">)</span>  <span class="com"># allow filtering for users</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t111" href="#t111">111</a></span><span class="t">        <span class="nam">dbSession</span><span class="op">.</span><span class="nam">exclude_from_indexes</span> <span class="op">=</span> <span class="op">[</span><span class="str">"data"</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t111" href="#t111">111</a></span><span class="t">        <span class="nam">dbSession</span><span class="op">.</span><span class="nam">exclude_from_indexes</span> <span class="op">=</span> <span class="op">{</span><span class="str">"data"</span><span class="op">}</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t112" href="#t112">112</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t113" href="#t113">113</a></span><span class="t">        <span class="nam">db</span><span class="op">.</span><span class="nam">Put</span><span class="op">(</span><span class="nam">dbSession</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t114" href="#t114">114</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -200,7 +200,7 @@
     <p class="mis show_mis"><span class="n"><a id="t116" href="#t116">116</a></span><span class="t">        <span class="nam">flags</span> <span class="op">=</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t117" href="#t117">117</a></span><span class="t">            <span class="str">"Path=/"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t118" href="#t118">118</a></span><span class="t">            <span class="str">"HttpOnly"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t119" href="#t119">119</a></span><span class="t">            <span class="str">f"SameSite={self.same_site}"</span> <span class="key">if</span> <span class="nam">self</span><span class="op">.</span><span class="nam">same_site</span> <span class="key">else</span> <span class="key">None</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t119" href="#t119">119</a></span><span class="t">            <span class="str">f"SameSite={self.same_site}"</span> <span class="key">if</span> <span class="nam">self</span><span class="op">.</span><span class="nam">same_site</span> <span class="key">and</span> <span class="key">not</span> <span class="nam">conf</span><span class="op">[</span><span class="str">"viur.instance.is_dev_server"</span><span class="op">]</span> <span class="key">else</span> <span class="key">None</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t120" href="#t120">120</a></span><span class="t">            <span class="str">"Secure"</span> <span class="key">if</span> <span class="key">not</span> <span class="nam">conf</span><span class="op">[</span><span class="str">"viur.instance.is_dev_server"</span><span class="op">]</span> <span class="key">else</span> <span class="key">None</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t121" href="#t121">121</a></span><span class="t">            <span class="str">f"Max-Age={conf['viur.session.lifeTime']}"</span> <span class="key">if</span> <span class="key">not</span> <span class="nam">self</span><span class="op">.</span><span class="nam">use_session_cookie</span> <span class="key">else</span> <span class="key">None</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t122" href="#t122">122</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -327,7 +327,7 @@
             <a id="nextFileLink" class="nav" href="d_e295e1cac9db2f73_skeleton_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.3.2">coverage.py v7.3.2</a>,
-            created at 2023-10-10 18:25 +0000
+            created at 2023-12-13 13:12 +0000
         </p>
     </div>
 </footer>
