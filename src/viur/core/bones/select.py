@@ -68,7 +68,7 @@ class SelectBone(BaseBone):
         self.translation_key_prefix = translation_key_prefix
 
         # handle list/tuple as dicts
-        if isinstance(values, (list, tuple)):
+        if isinstance(values, (list, tuple, t.Generator)):
             values = {value: value for value in values}
 
         assert isinstance(values, (dict, OrderedDict)) or callable(values)
