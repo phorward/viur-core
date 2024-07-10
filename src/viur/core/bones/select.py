@@ -49,7 +49,7 @@ class SelectBone(BaseBone):
             t.Dict[str, t.Union[SelectBoneMultiple, SelectBoneValue]],
             t.Callable[["SkeletonInstance", Self], t.Any],
         ] = None,
-        values: dict | list | tuple | t.Callable | enum.EnumMeta = (),
+        values: dict | list | tuple | t.Iterator | t.Callable | enum.EnumMeta = (),
         translation_key_prefix: str | t.Callable[[Self], str] = "",
         **kwargs
     ):
@@ -67,9 +67,9 @@ class SelectBone(BaseBone):
         super().__init__(defaultValue=defaultValue, **kwargs)
         self.translation_key_prefix = translation_key_prefix
 
-        # handle list/tuple as dicts
-        if isinstance(values, (list, tuple, t.Generator)):
-            values = {value: value for value in values}
+        # handle list/tuple/t.Iterator as stringified dicts of {value: value}
+        if isinstance(values, (list, tuple, t.Iterator)):
+            values = {value: str(value) for value in values}
 
         assert isinstance(values, (dict, OrderedDict)) or callable(values)
         self._values = values
@@ -92,10 +92,11 @@ class SelectBone(BaseBone):
                 values = values()
 
                 # handle list/tuple as dicts
-                if isinstance(values, (list, tuple)):
-                    values = {value: value for value in values}
+                if isinstance(values, (list, tuple, t.Iterator)):
+                    values = {value: str(value) for value in values}
 
-                assert isinstance(values, (dict, OrderedDict))
+                if not isinstance(values, (dict, OrderedDict)):
+                    raise ValueError()
 
             prefix = self.translation_key_prefix
             if callable(prefix):
