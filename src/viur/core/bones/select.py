@@ -69,7 +69,13 @@ class SelectBone(BaseBone):
             values = {value: value for value in values}
 
         assert isinstance(values, (dict, OrderedDict)) or callable(values)
-        self._values = values
+        self.values = values
+
+    def __setattr__(self, key, value):
+        if key == "values":
+            self._values = value
+        else:
+            super().__setattr__(key, value)
 
     def __getattribute__(self, item):
         """
