@@ -89,6 +89,9 @@ def key_helper(
             in_key = Key(target_kind, in_key.id_or_name, parent=in_key.parent)
         return in_key
     elif isinstance(in_key, str):
+        if not in_key.strip():
+            raise ValueError(f"Invalid str key {in_key!r}")
+
         # Try to parse key from str
         try:
             decoded_key = normalize_key(in_key)
@@ -110,6 +113,9 @@ def key_helper(
 
         return Key(target_kind, in_key)
     elif isinstance(in_key, int):
+        if in_key <= 0:
+            raise ValueError(f"Invalid int key {in_key!r}")
+
         return Key(target_kind, in_key)
 
     raise NotImplementedError(f"Unsupported key type {type(in_key)}")
